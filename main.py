@@ -5,8 +5,17 @@ from dotenv import load_dotenv
 #load the environment variables
 load_dotenv()
 
+#------------------------------------------------------------------------------------------------
+
+#discord intents
+intents = discord.Intents.default()
+intents.messages_content = True
+
 # Create a new Discord client
-client = discord.Client(intents=discord.Intents.all())
+client = discord.Client(intents=intents)
+
+#------------------------------------------------------------------------------------------------
+
 
 @client.event
 async def on_ready():
