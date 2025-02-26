@@ -1,7 +1,12 @@
 import discord
 import os
+from dotenv import load_dotenv
 
-client = discord.Client()
+#load the environment variables
+load_dotenv()
+
+# Create a new Discord client
+client = discord.Client(intents=discord.Intents.all())
 
 @client.event
 async def on_ready():
@@ -17,4 +22,9 @@ async def on_message(message):
         await message.channel.send('Hello!')
 
 
-client.run(os.getenv('TOKEN'))  # Discord Bot Token 
+# Get the token value from environment variable
+token = os.getenv('TOKEN')
+if token is None:
+    raise ValueError("TOKEN environment variable is not set or .env file not found")
+
+client.run(token)  # Discord Bot Token 
