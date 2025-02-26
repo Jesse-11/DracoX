@@ -9,7 +9,7 @@ load_dotenv()
 
 #discord intents
 intents = discord.Intents.default()
-intents.messages_content = True
+intents.message_content = True
 
 # Create a new Discord client
 client = discord.Client(intents=intents)
