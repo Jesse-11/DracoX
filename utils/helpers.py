@@ -8,6 +8,10 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger('bot.helpers')
 
+
+
+
+"""" Function to format time"""
 def format_time(seconds):
     """Format seconds into a human-readable time string
     
@@ -25,6 +29,10 @@ def format_time(seconds):
     else:
         return f"{int(minutes)}:{int(seconds):02d}"
 
+
+
+
+"""" Function to get a YouTube thumbnail"""	
 def get_thumbnail(url):
     """Extract YouTube thumbnail URL from video URL
     
@@ -49,6 +57,9 @@ def get_thumbnail(url):
     
     return None
 
+
+
+"""" Function to parse time"""
 def parse_time(time_str):
     """Parse a time string into seconds
     
@@ -71,6 +82,10 @@ def parse_time(time_str):
     except ValueError:
         return None
 
+
+
+
+"""" Function to check if a string is a URL"""
 def is_url(string):
     """Check if a string is a URL
     
@@ -90,6 +105,11 @@ def is_url(string):
         
     return bool(url_pattern.match(string))
 
+
+
+
+
+""" Function to create an embed"""
 def create_embed(title, description=None, color=discord.Color.blue(), fields=None, footer=None, thumbnail=None):
     """Create a Discord embed with common formatting
     
@@ -127,6 +147,11 @@ def create_embed(title, description=None, color=discord.Color.blue(), fields=Non
     
     return embed
 
+
+
+
+
+""" Function to log to channel"""
 def log_to_channel(bot, guild_id, message, level="INFO"):
     """Log a message to the guild's log channel
     

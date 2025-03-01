@@ -21,6 +21,11 @@ class Config:
         self._ensure_config_exists()
         self.config = self._load_config()
     
+
+
+
+
+    """ Fcuntion to handle config file creation"""
     def _ensure_config_exists(self):
         """Create config file if it doesn't exist"""
         os.makedirs(os.path.dirname(self.config_path), exist_ok=True)
@@ -34,6 +39,11 @@ class Config:
                     "custom_commands": {}
                 }, f, indent=4)
     
+
+
+
+
+    """ Function to load configuration from file"""
     def _load_config(self):
         """Load configuration from file"""
         try:
@@ -51,6 +61,11 @@ class Config:
                 "custom_commands": {}
             }
     
+
+
+
+
+    """ Function to save configuration to file"""
     def save_config(self):
         """Save configuration to file"""
         try:
@@ -62,6 +77,11 @@ class Config:
             logger.error(f"Error saving configuration: {e}")
             return False
     
+
+
+
+
+    """ Function to get a configuration value"""
     def get(self, key, default=None):
         """Get a configuration value
         
@@ -74,6 +94,11 @@ class Config:
         """
         return self.config.get(key, default)
     
+
+
+
+
+    """ Function to set a configuration value"""	
     def set(self, key, value):
         """Set a configuration value
         
@@ -87,6 +112,10 @@ class Config:
         self.config[key] = value
         return self.save_config()
     
+
+
+
+    """ Function to delete a configuration key"""
     def delete(self, key):
         """Delete a configuration key
         
@@ -101,6 +130,11 @@ class Config:
             return self.save_config()
         return False
     
+
+
+
+
+    """ Function to get all configuration values"""
     def get_all(self):
         """Get all configuration values
         
