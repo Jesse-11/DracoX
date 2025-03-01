@@ -14,7 +14,12 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.start_time = datetime.now()
-    
+
+
+
+
+
+    """ Function to check the bot's latency ( API and Response Time ) """   
     @commands.command(name='ping')
     async def ping(self, ctx):
         """Check the bot's latency"""
@@ -31,6 +36,23 @@ class General(commands.Cog):
         
         await message.edit(content=None, embed=embed)
     
+    
+
+
+
+
+
+    """ 
+    Function to display information about the bot 
+    ( 
+        Bot version, 
+        Discord.py version,
+        Python version,
+        Uptime (Days, Hours, Minutes, Seconds),
+        no# of servers the bot is in,
+        no# of commands the bot has
+    ) 
+    """
     @commands.command(name='info')
     async def info(self, ctx):
         """Display information about the bot"""
@@ -65,6 +87,13 @@ class General(commands.Cog):
         
         await ctx.send(embed=embed)
     
+
+
+
+
+
+
+    """ Function to display help for the bot's commands """
     @commands.command(name='help')
     async def help_command(self, ctx, command=None):
         """Show help for commands
@@ -72,7 +101,7 @@ class General(commands.Cog):
         Args:
             command: Specific command to get help for (optional)
         """
-        prefix = '!'  # Get from config in a real bot
+        prefix = '!'  
         
         if command:
             # Help for specific command
@@ -121,6 +150,13 @@ class General(commands.Cog):
         
         await ctx.send(embed=embed)
     
+
+
+
+
+
+
+    """ Function to display information about the server """
     @commands.command(name='serverinfo')
     async def server_info(self, ctx):
         """Display information about the current server"""
@@ -160,6 +196,12 @@ class General(commands.Cog):
         
         await ctx.send(embed=embed)
     
+
+
+
+
+
+    """ Function to send a welcome message when a new member joins """
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """Send welcome message when a new member joins"""
@@ -178,6 +220,13 @@ class General(commands.Cog):
                 embed.set_thumbnail(url=member.avatar.url if member.avatar else None)
                 await channel.send(embed=embed)
 
+
+
+
+
+
+
+""" Function to add the cog to the bot """
 async def setup(bot):
     """Add the cog to the bot"""
     await bot.add_cog(General(bot))
