@@ -5,7 +5,7 @@ Contains server management and moderation commands.
 import discord
 from discord.ext import commands
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 class AdminCommands(commands.Cog):
     """Commands for server administration and moderation"""
@@ -76,20 +76,59 @@ class AdminCommands(commands.Cog):
     @commands.command(name='timeout')
     @commands.has_permissions(moderate_members=True)
     async def timeout(self, ctx, member: discord.Member, minutes: int, *, reason=None):
-        """Timeout a member for a specified duration
+        """Timeout a member for a specified duration"""
+        # Debug info
+        status_msg = await ctx.send(f"⏳ Attempting to timeout {member.display_name}...")
         
-        Args:
-            member: The member to timeout (mention or ID)
-            minutes: Duration of timeout in minutes
-            reason: Reason for timeout (optional)
-        """
-        if minutes > 40320:  # Max 28 days
-            await ctx.send("Timeout cannot exceed 28 days (40320 minutes)")
+        # 1. Check member hierarchy
+        if member.top_role >= ctx.guild.me.top_role:
+            await status_msg.edit(content=f"❌ Cannot timeout: {member.display_name}'s highest role ({member.top_role.name}) is above or equal to my highest role ({ctx.guild.me.top_role.name}).")
             return
             
-        until = datetime.now() + timedelta(minutes=minutes)
-        await member.timeout(until, reason=reason)
-        await ctx.send(f'{member.mention} has been timed out for {minutes} minutes. Reason: {reason or "No reason provided"}')
+        # 2. Check admin status
+        if member.guild_permissions.administrator:
+            await status_msg.edit(content=f"❌ Cannot timeout: {member.display_name} has administrator permissions.")
+            return
+            
+        # 3. Check timeout duration
+        if minutes > 40320:  # Max 28 days
+            await status_msg.edit(content="❌ Timeout cannot exceed 28 days (40320 minutes).")
+            return
+        
+        # 4. Convert time with explicit UTC
+        try:
+            until = datetime.now(timezone.utc) + timedelta(minutes=minutes)
+            await status_msg.edit(content=f"⏳ Setting timeout until: {until.strftime('%Y-%m-%d %H:%M:%S %Z')}...")
+        except Exception as e:
+            await status_msg.edit(content=f"❌ Error creating datetime: {str(e)}")
+            return
+        
+        # 5. Apply timeout with extensive error handling
+        try:
+            # Apply timeout - FIXED: passing 'until' as positional argument
+            await member.timeout(until, reason=reason)
+            
+            # Verify timeout was applied
+            updated_member = ctx.guild.get_member(member.id)
+            if updated_member and updated_member.is_timed_out():
+                embed = discord.Embed(
+                    title="✅ Member Timed Out",
+                    description=f"{member.mention} has been timed out for {minutes} minutes.",
+                    color=discord.Color.orange()
+                )
+                if reason:
+                    embed.add_field(name="Reason", value=reason)
+                embed.set_footer(text=f"Timed out by {ctx.author}")
+                await status_msg.edit(content=None, embed=embed)
+            else:
+                await status_msg.edit(content=f"⚠️ API call completed but {member.display_name} is not showing as timed out. This may be a Discord API issue.")
+                
+        except discord.Forbidden as e:
+            await status_msg.edit(content=f"❌ Permission error: {str(e)}")
+        except discord.HTTPException as e:
+            await status_msg.edit(content=f"❌ HTTP error: {str(e)}")
+        except Exception as e:
+            await status_msg.edit(content=f"❌ Unexpected error: {str(e)}")
     
 
 
