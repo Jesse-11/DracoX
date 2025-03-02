@@ -1,26 +1,17 @@
-"""
-Helper functions for common tasks.
-"""
 import discord
 import re
 import logging
 from datetime import datetime, timedelta
+
 
 logger = logging.getLogger('bot.helpers')
 
 
 
 
-"""" Function to format time"""
+# Function to format time
 def format_time(seconds):
-    """Format seconds into a human-readable time string
-    
-    Args:
-        seconds: Number of seconds
-        
-    Returns:
-        Formatted time string (e.g. "3:45" or "1:23:45")
-    """
+
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     
@@ -32,43 +23,13 @@ def format_time(seconds):
 
 
 
-"""" Function to get a YouTube thumbnail"""	
-def get_thumbnail(url):
-    """Extract YouTube thumbnail URL from video URL
-    
-    Args:
-        url: YouTube video URL
-        
-    Returns:
-        Thumbnail URL or None if not a valid YouTube URL
-    """
-    # Extract video ID from various YouTube URL formats
-    patterns = [
-        r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)',
-        r'youtu\.be/([a-zA-Z0-9_-]+)',
-        r'youtube\.com/embed/([a-zA-Z0-9_-]+)'
-    ]
-    
-    for pattern in patterns:
-        match = re.search(pattern, url)
-        if match:
-            video_id = match.group(1)
-            return f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
-    
-    return None
 
 
 
-"""" Function to parse time"""
+
+# Function to parse time
 def parse_time(time_str):
-    """Parse a time string into seconds
-    
-    Args:
-        time_str: Time string (e.g. "3:45" or "1:23:45")
-        
-    Returns:
-        Number of seconds or None if invalid format
-    """
+
     parts = time_str.split(':')
     try:
         if len(parts) == 2:  # MM:SS
@@ -85,45 +46,15 @@ def parse_time(time_str):
 
 
 
-"""" Function to check if a string is a URL"""
-def is_url(string):
-    """Check if a string is a URL
-    
-    Args:
-        string: String to check
-        
-    Returns:
-        True if the string is a URL, False otherwise
-    """
-    url_pattern = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain
-        r'localhost|'  # localhost
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # or IP
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-        
-    return bool(url_pattern.match(string))
 
 
 
 
 
-""" Function to create an embed"""
+
+# Function to create an embed
 def create_embed(title, description=None, color=discord.Color.blue(), fields=None, footer=None, thumbnail=None):
-    """Create a Discord embed with common formatting
-    
-    Args:
-        title: Embed title
-        description: Embed description
-        color: Embed color
-        fields: List of dicts with name, value, inline keys
-        footer: Footer text
-        thumbnail: Thumbnail URL
-        
-    Returns:
-        discord.Embed object
-    """
+
     embed = discord.Embed(
         title=title,
         description=description,
@@ -151,19 +82,9 @@ def create_embed(title, description=None, color=discord.Color.blue(), fields=Non
 
 
 
-""" Function to log to channel"""
+# Function to log to channel
 def log_to_channel(bot, guild_id, message, level="INFO"):
-    """Log a message to the guild's log channel
-    
-    Args:
-        bot: Bot instance
-        guild_id: Guild ID
-        message: Message to log
-        level: Log level
-        
-    Returns:
-        True if logged successfully, False otherwise
-    """
+
     from utils.config import Config
     config = Config()
     

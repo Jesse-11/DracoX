@@ -1,20 +1,24 @@
 import discord
 from discord.ext import commands
 
+
+
 class TextToSpeech(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
+
+
+
+    # Function to turn user message into tts
     @commands.command(name='tts')
     async def text_to_speech(self, ctx, *, message=None):
-        """
-        Converts text to speech and plays it in the voice channel.
-        Usage: !tts <message>
-        """
+
+
         # Check if a message was provided
         if message is None:
             embed = discord.Embed(
-                title="⚠️ Error",
+                title="Error",
                 description="Please provide a message to convert to speech.",
                 color=discord.Color.red()
             )
@@ -25,7 +29,7 @@ class TextToSpeech(commands.Cog):
         # Check if the message is too long (Discord has limits)
         if len(message) > 200:
             embed = discord.Embed(
-                title="⚠️ Error",
+                title="Error",
                 description="Your message is too long. Please keep it under 200 characters.",
                 color=discord.Color.red()
             )
@@ -38,7 +42,7 @@ class TextToSpeech(commands.Cog):
             
             # Send a confirmation embed
             embed = discord.Embed(
-                title="🔊 Text-to-Speech",
+                title="Text-to-Speech",
                 description=f"TTS message sent by {ctx.author.mention}",
                 color=discord.Color.blue()
             )
@@ -47,7 +51,7 @@ class TextToSpeech(commands.Cog):
             
         except discord.HTTPException as e:
             embed = discord.Embed(
-                title="⚠️ Error",
+                title="Error",
                 description=f"Failed to send TTS message: {str(e)}",
                 color=discord.Color.red()
             )
@@ -55,11 +59,14 @@ class TextToSpeech(commands.Cog):
             
         except Exception as e:
             embed = discord.Embed(
-                title="⚠️ Error",
+                title="Error",
                 description=f"An unexpected error occurred: {str(e)}",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
 
+
+
+# Function to add cog to bot
 async def setup(bot):
     await bot.add_cog(TextToSpeech(bot))

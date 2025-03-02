@@ -1,7 +1,3 @@
-"""
-General commands for the Discord bot.
-Contains utility and informational commands.
-"""
 import discord
 from discord.ext import commands
 import platform
@@ -19,10 +15,10 @@ class General(commands.Cog):
 
 
 
-    """ Function to check the bot's latency ( API and Response Time ) """   
+    #Function to check the bot's latency ( API and Response Time )   
     @commands.command(name='ping')
     async def ping(self, ctx):
-        """Check the bot's latency"""
+
         start_time = time.time()
         message = await ctx.send("Pinging...")
         end_time = time.time()
@@ -55,7 +51,7 @@ class General(commands.Cog):
     """
     @commands.command(name='info')
     async def info(self, ctx):
-        """Display information about the bot"""
+
         embed = discord.Embed(
             title=f"{self.bot.user.name} Info",
             description="A modular Discord bot built with discord.py",
@@ -93,14 +89,10 @@ class General(commands.Cog):
 
 
 
-    """ Function to display help for the bot's commands """
+    # Function to display help for the bot's commands 
     @commands.command(name='help')
     async def help_command(self, ctx, command=None):
-        """Show help for commands
-        
-        Args:
-            command: Specific command to get help for (optional)
-        """
+
         prefix = '!'  
         
         if command:
@@ -156,10 +148,10 @@ class General(commands.Cog):
 
 
 
-    """ Function to display information about the server """
+    #Function to display information about the server 
     @commands.command(name='serverinfo')
     async def server_info(self, ctx):
-        """Display information about the current server"""
+
         guild = ctx.guild
         
         # Get role count excluding @everyone
@@ -201,10 +193,10 @@ class General(commands.Cog):
 
 
 
-    """ Function to send a welcome message when a new member joins """
+    # Function to send a welcome message when a new member joins 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        """Send welcome message when a new member joins"""
+
         from utils.config import Config
         config = Config()
         
@@ -226,7 +218,7 @@ class General(commands.Cog):
 
 
 
-""" Function to add the cog to the bot """
+# Function to add the cog to the bot 
 async def setup(bot):
-    """Add the cog to the bot"""
+
     await bot.add_cog(General(bot))

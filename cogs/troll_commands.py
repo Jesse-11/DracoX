@@ -10,9 +10,12 @@ class TrollCommands(commands.Cog):
         self.typing_tasks = {}  # For tracking endless typing indicators
     
     
+
+
+    # Function to ping a user and delete it 
     @commands.command(name='ghostping')
     async def ghost_ping(self, ctx, target: discord.Member = None):
-        """Ghost ping a user - ping them and then delete the message"""
+
         if target is None:
             await ctx.send("Please mention a user to ghost ping")
             return
@@ -24,10 +27,15 @@ class TrollCommands(commands.Cog):
         await ctx.message.delete()
         await message.delete()
     
+
+
+
+
+    # Function to send a message impersonating someone else
     @commands.command(name='impersonate')
     @commands.has_permissions(manage_webhooks=True)
     async def impersonate(self, ctx, target: discord.Member, *, message=None):
-        """Send a message as if it's from someone else (needs webhook permissions)"""
+
         if message is None:
             await ctx.send("Please provide a message to send")
             return
@@ -49,10 +57,15 @@ class TrollCommands(commands.Cog):
             # Clean up the webhook afterward
             await webhook.delete()
     
+
+
+
+
+    # Function to disconnect a user from voice channel
     @commands.command(name='disconnect')
     @commands.has_permissions(move_members=True)
     async def disconnect_user(self, ctx, target: discord.Member = None):
-        """Disconnect a user from voice channel"""
+
         if target is None:
             await ctx.send("Please mention a user to disconnect")
             return
@@ -66,5 +79,8 @@ class TrollCommands(commands.Cog):
     
     
     
+
+
+# Function to add the cog to the bot
 async def setup(bot):
     await bot.add_cog(TrollCommands(bot))

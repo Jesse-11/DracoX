@@ -1,7 +1,4 @@
-"""
-Main entry point for the Discord bot.
-Loads the bot and runs it.
-"""
+# Loads the bot and runs it
 from bot.bot_client import bot
 
 if __name__ == "__main__":

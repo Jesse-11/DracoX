@@ -1,4 +1,1 @@
-"""
-Cogs package initialization.
-"""
-# This file makes the cogs directory a Python package
+# Makes cogs directory a Python package

@@ -1,7 +1,3 @@
-"""
-Bot client setup and configuration.
-Contains the main bot class and setup logic.
-"""
 import os
 import discord
 from discord.ext import commands
@@ -11,7 +7,7 @@ import logging
 
 
 
-# Configure logging
+# Configure logging for error and info messages
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -26,7 +22,7 @@ logger = logging.getLogger('bot')
 
 
 
-# Load environment variables
+# Load env.
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 
@@ -50,7 +46,7 @@ class DiscordBot:
         
         @self.bot.event
         async def on_ready():
-            """Called when the bot is ready and connected to Discord"""
+            # Called when the bot is ready and connected to Discord
             await self.bot.change_presence(
                 activity=discord.Activity(
                     type=discord.ActivityType.listening, 
@@ -63,11 +59,11 @@ class DiscordBot:
         self.bot.setup_hook = self.setup_hook
     
     async def setup_hook(self):
-        """Async setup hook called before the bot starts running"""
+        # called before running the bot to load cogs.
         await self._load_cogs()
     
     async def _load_cogs(self):
-        """Load all command cogs from the cogs directory"""
+        #Load all command cogs from the cogs directory
         for filename in os.listdir('./cogs'):
             if filename.endswith('.py') and not filename.startswith('__'):
                 try:
@@ -77,7 +73,7 @@ class DiscordBot:
                     logger.error(f'Failed to load extension {filename[:-3]}: {e}')
     
     def run_bot(self):
-        """Start the bot"""
+        # Start the bot
         try:
             logger.info("Starting bot...")
             self.bot.run(TOKEN)
